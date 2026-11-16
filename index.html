@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>DeBoerHO</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23a855f7'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ctext x='32' y='45' font-family='Arial Black,Arial,sans-serif' font-weight='900' font-size='36' text-anchor='middle' fill='url(%23g)'%3EDH%3C/text%3E%3C/svg%3E">
+<style>
+:root{--r:110px;--x1:-999px;--y1:-999px}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:#000;touch-action:none}
+body{color:#fff;font-family:"Avenir Next","Helvetica Neue",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden;-webkit-text-size-adjust:100%;-webkit-user-select:none;user-select:none}
+
+/* alles wat gekleurd is zit in deze laag; die is alleen zichtbaar binnen de twee lenzen */
+.reveal{position:fixed;inset:0;
+ -webkit-mask-image:radial-gradient(circle var(--r) at var(--x1) var(--y1),#000 97%,transparent 100%);
+ mask-image:radial-gradient(circle var(--r) at var(--x1) var(--y1),#000 97%,transparent 100%)}
+
+.blobs{position:absolute;inset:-20%;filter:blur(60px) saturate(1.4)}
+.blobs i{position:absolute;border-radius:50%;mix-blend-mode:screen;will-change:transform}
+.blobs i:nth-child(1){width:55vmax;height:55vmax;left:-5%;top:-10%;background:radial-gradient(circle at 30% 30%,#7c3aed,transparent 65%);animation:a1 14s ease-in-out infinite alternate}
+.blobs i:nth-child(2){width:50vmax;height:50vmax;right:-10%;top:5%;background:radial-gradient(circle at 60% 40%,#06b6d4,transparent 65%);animation:a2 17s ease-in-out infinite alternate}
+.blobs i:nth-child(3){width:45vmax;height:45vmax;left:20%;bottom:-20%;background:radial-gradient(circle at 50% 50%,#ec4899,transparent 65%);animation:a3 20s ease-in-out infinite alternate}
+@keyframes a1{to{transform:translate(18vw,14vh) scale(1.2)}}
+@keyframes a2{to{transform:translate(-20vw,18vh) scale(.9)}}
+@keyframes a3{to{transform:translate(14vw,-20vh) scale(1.15)}}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:56px 56px;animation:drift 30s linear infinite}
+@keyframes drift{to{background-position:56px 56px}}
+.grain{position:absolute;inset:0;opacity:.2;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+main{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+h1{margin:0;font-size:clamp(56px,17.5vw,210px);line-height:.95;font-weight:900;font-style:normal;letter-spacing:-.04em;text-align:center;white-space:nowrap;padding:0 .08em .06em;
+ background:linear-gradient(100deg,#fff 0%,#ddd6fe 18%,#67e8f9 40%,#f0abfc 62%,#fff 80%,#a5f3fc 100%);background-size:260% 100%;
+ -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+ filter:drop-shadow(0 0 24px rgba(168,85,247,.6)) drop-shadow(0 0 60px rgba(34,211,238,.4));
+ animation:shimmer 7s linear infinite}
+@keyframes shimmer{to{background-position:-260% 0}}
+.line{margin-top:clamp(14px,3vh,28px);width:min(260px,50vw);height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,#a78bfa,#22d3ee,#f0abfc,transparent);box-shadow:0 0 18px rgba(167,139,250,.8)}
+.url{margin-top:18px;font:600 clamp(11px,3vw,14px)/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+
+/* de lens van de verrekijker */
+.lens{position:fixed;left:0;top:0;width:calc(var(--r)*2);height:calc(var(--r)*2);border-radius:50%;pointer-events:none;will-change:transform;
+ border:2px solid rgba(255,255,255,.32);
+ box-shadow:inset 0 0 calc(var(--r)*.35) rgba(0,0,0,.85),inset 0 0 0 calc(var(--r)*.035) rgba(0,0,0,.6),0 0 30px rgba(139,92,246,.35)}
+.lens::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.2),transparent 32%)}
+.l1{transform:translate(calc(var(--x1) - var(--r)),calc(var(--y1) - var(--r)))}
+
+.reveal{pointer-events:none}
+.go{position:absolute;left:0;right:0;bottom:max(26px,calc(env(safe-area-inset-bottom) + 14px));display:flex;justify-content:center}
+.go a{display:inline-block;color:#fff;text-decoration:none;font:600 13px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;padding:13px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08);pointer-events:none;transition:box-shadow .25s,border-color .25s}
+/* klikbaar zodra de lens eroverheen ligt */
+.go a.on{pointer-events:auto;cursor:pointer}
+.go a.on:hover,.go a:focus-visible{border-color:rgba(103,232,249,.95);box-shadow:0 0 26px rgba(34,211,238,.55)}
+
+@media (prefers-reduced-motion:reduce){.blobs i,.grid,h1{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="reveal">
+ <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+ <div class="grid" aria-hidden="true"></div>
+ <div class="grain" aria-hidden="true"></div>
+ <main>
+  <h1>DeBoerHO</h1>
+  <div class="line"></div>
+  <div class="url">prive.deboerho.nl</div>
+  <div class="go"><a href="hyrox-timer/">HYROX Timer &rarr;</a></div>
+ </main>
+</div>
+<div class="lens l1" aria-hidden="true"></div>
+<script>
+(function(){
+ var st=document.documentElement.style,R=110,link=document.querySelector('.go a'),on=false;
+ var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function size(){R=Math.max(80,Math.min(innerWidth,innerHeight)*.28);st.setProperty('--r',R+'px')}
+ size();addEventListener('resize',size);
+ var cx=innerWidth/2,cy=innerHeight*.45,tx=cx,ty=cy,last=-1e9,t=0;
+ function move(e){
+  if(e.target&&e.target.closest&&e.target.closest('.go a'))return; // tikken op de link: lens blijft liggen
+  var touch=e.pointerType==='touch';
+  var f=Math.min(1,Math.max(0,(innerHeight-e.clientY-60)/(2.2*R))); // onderaan ligt de lens op je vinger
+  tx=e.clientX;ty=e.clientY-(touch?R*1.25*f:0); // elders boven je vinger
+  last=performance.now();
+ }
+ addEventListener('pointermove',move,{passive:true});
+ addEventListener('pointerdown',move,{passive:true});
+ function loop(now){
+  // zonder beweging (5 sec) zweeft de verrekijker zelf rustig rond
+  if(!reduce&&now-last>5000){t+=.008;tx=innerWidth*(.5+.3*Math.cos(t));ty=innerHeight*(.45+.2*Math.sin(t*1.3))}
+  cx+=(tx-cx)*.16;cy+=(ty-cy)*.16;
+  st.setProperty('--x1',cx.toFixed(1)+'px');st.setProperty('--y1',cy.toFixed(1)+'px');
+  var b=link.getBoundingClientRect(),inside=Math.hypot(b.left+b.width/2-cx,b.top+b.height/2-cy)<R*.75;
+  if(inside!==on){on=inside;link.classList.toggle('on',inside)}
+  requestAnimationFrame(loop);
+ }
+ requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
